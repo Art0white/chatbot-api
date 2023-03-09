@@ -25,7 +25,7 @@ public class ApiTest {
 
         HttpGet get = new HttpGet("https://api.zsxq.com/v2/groups/ /topics?scope=all&count=20");
 
-        get.addHeader("cookie","");
+        get.addHeader("cookie"," ");
         get.addHeader("Content-Type","application/json, text/plain, */*");
 
         CloseableHttpResponse response = httpClient.execute(get);
@@ -43,7 +43,7 @@ public class ApiTest {
 
         HttpPost post = new HttpPost("https://api.zsxq.com/v2/topics/ /answer");
 
-        post.addHeader("cookie","");
+        post.addHeader("cookie"," ");
         post.addHeader("Content-Type","application/json, text/plain, */*");
 
         // silenced为true，仅提问者可见；为false，所有人可见
