@@ -1,6 +1,8 @@
 package cn.lovsog.chatbot.api.test;
 
+import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -60,6 +62,48 @@ public class ApiTest {
 
         CloseableHttpResponse response = httpClient.execute(post);
         if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            String res = EntityUtils.toString(response.getEntity());
+            System.out.println(res);
+        } else {
+            System.out.println(response.getStatusLine().getStatusCode());
+        }
+    }
+
+    @Test
+    public void text_chatGPT() throws IOException{
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+
+        HttpPost post = new HttpPost("https://api.openai.com/v1/chat/completions");
+
+        // 配置代理
+        RequestConfig defaultRequestConfig = RequestConfig.custom()
+                .setSocketTimeout(10000)
+                .setConnectTimeout(10000)
+                .setConnectionRequestTimeout(10000)
+                .build();
+        RequestConfig requestConfig = RequestConfig.copy(defaultRequestConfig)
+                .setProxy(new HttpHost("localhost", 10809))
+                .build();
+        post.setConfig(requestConfig);
+
+        post.addHeader("Content-Type", "application/json");
+        post.addHeader("Authorization", "Bearer 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");
+
+        //GPT-3
+        //  - text-davinci-003
+        //  - text-curie-001
+        //  - text-babbage-001
+        //  - text-ada-001
+        //CODEX
+        //  - code-davinci-002
+        //  - code-cushman-001
+        String paramJson = "{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\", \"content\": \"用java实现冒泡排序\"}], \"temperature\": 0.7}";
+
+        StringEntity stringEntity = new StringEntity(paramJson, ContentType.create("text/json", "UTF-8"));
+        post.setEntity(stringEntity);
+
+        CloseableHttpResponse response = httpClient.execute(post);
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
             String res = EntityUtils.toString(response.getEntity());
             System.out.println(res);
         } else {
