@@ -87,7 +87,7 @@ public class ApiTest {
         post.setConfig(requestConfig);
 
         post.addHeader("Content-Type", "application/json");
-        post.addHeader("Authorization", "Bearer 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");
+        post.addHeader("Authorization", "Bearer 自己申请");
 
         //GPT-3
         //  - text-davinci-003
